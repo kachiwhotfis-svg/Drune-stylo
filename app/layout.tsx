@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MotionProvider } from "@/components/MotionProvider";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -34,9 +35,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${fredoka.variable} ${caveat.variable} ${nunito.variable}`}>
       <body className="font-body antialiased">
         <MotionProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <SmoothScrollProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </SmoothScrollProvider>
         </MotionProvider>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Scene } from "./illustrations/Scene";
 import { scenes } from "./illustrations/scenes";
 import { Artwork } from "@/lib/artworks";
@@ -14,15 +15,37 @@ export function ArtworkCard({
   onOpen: () => void;
   index?: number;
 }) {
+  const cardRef = useRef<HTMLButtonElement>(null);
+  const rotateX = useSpring(useMotionValue(0), { stiffness: 300, damping: 25 });
+  const rotateY = useSpring(useMotionValue(0), { stiffness: 300, damping: 25 });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLButtonElement>) {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    rotateY.set(px * 10);
+    rotateX.set(py * -10);
+  }
+
+  function handleMouseLeave() {
+    rotateX.set(0);
+    rotateY.set(0);
+  }
+
   return (
     <motion.button
+      ref={cardRef}
       onClick={onOpen}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: (index % 3) * 0.08 }}
-      whileHover={{ y: -6, rotate: index % 2 === 0 ? -1 : 1 }}
+      whileHover={{ y: -6 }}
       whileTap={{ scale: 0.98 }}
+      style={{ rotateX, rotateY, transformPerspective: 800 }}
       className="group relative text-left w-full rounded-2xl border-[3px] border-ink bg-paper shadow-card overflow-hidden focus:outline-none focus-visible:ring-4 focus-visible:ring-sun"
     >
       <div className="relative aspect-[4/3] overflow-hidden border-b-[3px] border-ink">

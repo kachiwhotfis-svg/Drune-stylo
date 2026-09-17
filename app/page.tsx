@@ -5,6 +5,7 @@ import { PortfolioGrid } from "@/components/PortfolioGrid";
 import { BlogCard } from "@/components/BlogCard";
 import { Reveal } from "@/components/Reveal";
 import { FloatingShapes } from "@/components/FloatingShapes";
+import { ParallaxLayer } from "@/components/ParallaxLayer";
 import { Scene } from "@/components/illustrations/Scene";
 import { scenes } from "@/components/illustrations/scenes";
 
@@ -14,8 +15,10 @@ export default function HomePage() {
 
   return (
     <div>
-      <section className="relative px-6 sm:px-10 pt-10 pb-20 sm:pt-16 sm:pb-28">
-        <FloatingShapes />
+      <section className="relative px-6 sm:px-10 pt-10 pb-20 sm:pt-16 sm:pb-28 overflow-hidden">
+        <ParallaxLayer speed={0.3} className="absolute inset-0">
+          <FloatingShapes />
+        </ParallaxLayer>
         <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="font-display text-sm uppercase tracking-[0.2em] text-coral">Children&rsquo;s book illustrator</p>
@@ -42,12 +45,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="relative">
+          <ParallaxLayer speed={0.12} className="relative">
             <div className="absolute -inset-4 rounded-[2rem] bg-sun/30 rotate-2" aria-hidden="true" />
             <div className="relative overflow-hidden rounded-[2rem] border-[3px] border-ink shadow-pop">
               <Scene def={scenes["fox-and-book"]} stage="color" className="h-full w-full" />
             </div>
-          </div>
+          </ParallaxLayer>
         </div>
       </section>
 
